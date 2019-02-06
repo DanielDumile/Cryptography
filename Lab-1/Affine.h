@@ -3,16 +3,17 @@ using namespace std;
 class Affine
 {
 private:
-	string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//ENE es la pos 13
+	string alphabet = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
 	vector<int> inverse;
 public:
 	void setMultiplicativeInverse(){
-		inverse.resize(26);
+		inverse.resize(27);
 		//filas
 		int nada = 0;
-		for (int i = 0; i < 26; ++i){
+		for (int i = 0; i < 27; ++i){
 			//columnas
-			for (int j = 0; j < 26; ++j){
+			for (int j = 0; j < 27; ++j){
 				if(!i){
 					if(!j){
 						nada++;
@@ -25,9 +26,9 @@ public:
 					nada++;
 				}
 				else{
-					int ans = (i*j) % 26;
+					int ans = (i*j) % 27;
 					if(ans == 1){
-						cout << "The inverse of " << i << " is " << j << endl;
+						//cout << "The inverse of " << i << " is " << j << endl;
 						inverse[i] = j;
 						inverse[j] = i;
 					}
@@ -35,6 +36,18 @@ public:
 			}
 		}
 	}
+
+	int charToPos(char c){
+		int pos = c - 'A';
+		//cout << "Pos funcion da " << pos << endl;
+		if(pos < 0)
+			return 14;
+		else if(pos < 14)
+			return pos;
+		else if(pos >=14)
+			return pos+1;
+	}
+
 	string getCiphertext(int a,int b,string original){
 		string answer="";
 		for (int i = 0; i < original.size(); ++i){
@@ -42,15 +55,22 @@ public:
 				answer+=' ';
 				continue;
 			}
-			int position = ((a*(original[i]-65))+b)%26;
-			answer+=alphabet[position];
+			int position = ((a*(charToPos(original[i])))+b)%27;
+			//cout << "My position is " << position << endl;
+			if(position != 14){
+				if(position > 14)
+					position++;
+				answer+=alphabet[position];
+			}
+			else
+				answer= answer+((char)165);
 		}
 		return answer;
 	}
 	void initAffineCipher(){
 		int a,b;
 		string aux_a,aux_b,message;
-		cout << "This affine cipher uses a ENGLISH alphabet\n";
+		cout << "This affine cipher uses a SPANISH alphabet\n";
 		while(true){
 			cout << "Enter a:\n";
 			getline(cin,aux_a);
@@ -76,12 +96,19 @@ public:
 				answer+=' ';
 				continue;
 			}
-			int position = (((ciphertext[i]-65)-b)*inverse[a]);
+			int position = (((charToPos(ciphertext[i]))-b)*inverse[a]);
 			//cout << "Position is " << position << endl;
 			while(position < 0)
-				position+=26;
-			position%=26;
-			answer+=alphabet[position];
+				position+=27;
+			position%=27;
+
+			if(position != 14){
+				if(position > 14)
+					position++;
+				answer+=alphabet[position];
+			}
+			else
+				answer= answer+((char)165);
 		}
 		return answer;
 	}
@@ -89,7 +116,7 @@ public:
 	void initAffineDecipher(){
 		int a,b;
 		string aux_a,aux_b,message;
-		cout << "This affine cipher uses a ENGLISH alphabet\n";
+		cout << "This affine cipher uses a SPANISH alphabet\n";
 		while(true){
 			cout << "Enter a:\n";
 			getline(cin,aux_a);

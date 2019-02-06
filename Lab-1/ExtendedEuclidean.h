@@ -31,7 +31,10 @@ public:
 		if(gcd != 1)
 			cout <<"There is no multiplicative inverse\n";
 		else{
-			x = (x % m + m) % m;
+			//x = (x % m + m) % m;
+			while(x < 0)
+				x+=m;
+			x%=m;
 			cout << "The multiplicative inverse is " << x << endl;
 		}
 	}
