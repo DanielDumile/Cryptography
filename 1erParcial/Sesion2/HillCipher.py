@@ -90,7 +90,7 @@ def filterWord(originalWord, alphabet):
 			finalString+=temporaryList[i]
 	return finalString
 
-
+# IMPORTANTE
 def encryptOrDecryptWord(originalWord, alphabet,matrix,type_cf):
 	cipherWord = ""
 
@@ -131,7 +131,7 @@ def encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet, alphabet,type_
     cipherText = encryptOrDecryptWord(fullText,alphabet,matrix,type_cf)
 	
     return cipherText
-
+# IMPORTANTE
 def readMatrixValues(matrixFile):
 	sourceFile = matrixFile+".txt"
 	values = open(sourceFile, 'r').read()
