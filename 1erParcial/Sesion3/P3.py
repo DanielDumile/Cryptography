@@ -7,7 +7,7 @@ import shutil
 import numpy as np
 import math
 
-sizeAlphabet = 94
+sizeAlphabet = 26
 specialCases = 6
 matrix_size = 3
 
@@ -183,24 +183,54 @@ def encryptOrDecryptFromFile(matrixFile,initialFile, finalFile, type_cf):
 
 def testApp():
 	initialFile = "plainText"
+	matrixFile = "matrixKey"
 	miComando   = "clear"
 	subprocess.call(miComando, shell=True)
 	option = input("1: Encrypt \n2: Decrypt \nInput: ")
 	subprocess.call(miComando, shell=True)
 	
 	option = int(option)
-	matrixFile = input("Name of the file that contains the key:")
 
 	if (int(option) == 1):
 		encryptOrDecryptFromFile(matrixFile,initialFile ,"cipherText",True)
 		os.rename('cipherText.txt',initialFile+".hill")
-		print("Message successfully ciphered!")
+		print("Message successfully encrypted!")
 	elif (option == 2):
 		shutil.copyfile(initialFile+'.hill', initialFile+'_.hill')  
 		os.rename(initialFile+'.hill',"cipherText.txt")
 		os.rename(initialFile+'_.hill',initialFile+'.hill')
 		encryptOrDecryptFromFile(matrixFile,"cipherText","decipherText", False)
 		os.remove("cipherText.txt")
-		print("Deciphering DONE!")
+		print("Decrypting DONE!")
 		
-testApp()
+#testApp()
+# Como sacar a K?
+# 1.-Primero necesitamos sacar la matriz del texto plano
+# 2.-Despues debemos sacar la inversa de ese texto plano
+# 3.- Sacamos la matriz del texto cifrado
+# 4.- Para sacar a nuestra K(llave) multiplicamos la Inversa del plano y nuestro cifrado
+
+# Como descifrar un texto cifrado con la K que conseguimos?
+# 1.- Sacamos la matriz del texto cifrado
+# 2.- Sacamos a la inversa de nuestra k
+# 3.- Multiplicamos el cifrado por la inversa
+# 4.- Conseguimos el texto original
+def prueba():
+	plano = np.array([[7,14,11],[0,15,14],[17,17,14]])
+	#print(getDeterminant(plano))
+	inversa = getMatrixInverse(plano)
+	#print(inversa)
+	cifrado = np.array([[5,12,14],[18,2,3],[15,1,22]])
+	k = np.dot(inversa,cifrado) % sizeAlphabet
+	print("La K es")
+	print(k)
+	perro = np.array([[15,4,17],[17,14,6],[0,19,14]])
+	cifrado_perro = np.dot(perro,k)%sizeAlphabet
+	print("Cifrado perro")
+	print(cifrado_perro)
+	inversa_k = getMatrixInverse(k)
+	original_perro = np.dot(cifrado_perro,inversa_k)%sizeAlphabet
+	print("Orignal perro")
+	print(original_perro)
+
+prueba()
