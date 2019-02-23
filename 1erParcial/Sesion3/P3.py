@@ -60,6 +60,10 @@ def getMatrixInverse(matrix):
 		inverse = (multiplicativeInverse*adjoint)%sizeAlphabet
 	return inverse
 
+
+
+
+
 #COSAS PARA ARCHIVOS
 
 def validateValues(matrix, fileSource, type_cf):
@@ -76,8 +80,8 @@ def validateValues(matrix, fileSource, type_cf):
 def convertListToDictionary(myList):
 	temporaryList = myList
 	temporaryDictionary = {}
-	for i in range(specialCases):
-		temporaryList.pop()
+	# for i in range(specialCases):
+	# 	temporaryList.pop()
 	for i in range(len(myList)):
 		temporaryDictionary[i] = temporaryList[i]  
 	return temporaryDictionary
@@ -89,6 +93,8 @@ def filterWord(originalWord, alphabet):
 		if temporaryList[i] in alphabet.values():
 			finalString+=temporaryList[i]
 	return finalString
+
+
 
 # IMPORTANTE
 def encryptOrDecryptWord(originalWord, alphabet,matrix,type_cf):
@@ -131,7 +137,9 @@ def encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet, alphabet,type_
     cipherText = encryptOrDecryptWord(fullText,alphabet,matrix,type_cf)
 	
     return cipherText
+
 # IMPORTANTE
+
 def readMatrixValues(matrixFile):
 	sourceFile = matrixFile+".txt"
 	values = open(sourceFile, 'r').read()
@@ -158,28 +166,79 @@ def cleanCiphertext(cipherText,alphabet):
 
 	return cleanText
 
-def encryptOrDecryptFromFile(matrixFile,initialFile, finalFile, type_cf):
-    sourceFile = initialFile+".txt"
-    originalText = open(sourceFile, 'r').read()
+# def encryptOrDecryptFromFile(matrixFile,initialFile, finalFile, type_cf):
+#     sourceFile = initialFile+".txt"
+#     originalText = open(sourceFile, 'r').read()
+
+#     alphabet = convertListToDictionary(list(string.printable))
+
+#     if type_cf == False:
+#         originalText = originalText[1:]
+#         originalText = originalText[:len(originalText)-1]
+#         originalText = cleanCiphertext(originalText,alphabet)
+
+#     matrix = readMatrixValues(matrixFile)
+#     errorType = validateValues(matrix,initialFile, type_cf)
+
+#     if errorType > 0:
+#     	print("Error "+str(errorType)+" has been made, see the documentation")
+#     	sys.exit()
+#     else:
+# 	    cipherText = repr(encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet,alphabet,type_cf))
+# 	    file = open(finalFile+".txt",'w')
+# 	    file.write(str(cipherText))
+# 	    file.close()
+
+def getMatrixFromText(text,alphabet):
+	temporaryList = list(text)
+	l = []
+	for i in range(len(temporaryList)):
+		temporaryString = str(temporaryList[i])
+		if temporaryString in alphabet.values():
+			lKey = [key for key, value in alphabet.items() if value == temporaryString][0]
+			l.append(lKey)
+	matrix = np.array([[int(l[0]),int(l[1]),int(l[2])],[int(l[3]),int(l[4]),int(l[5])],[int(l[6]),int(l[7]),int(l[8])]])
+	return matrix
+
+# Como sacar a K?
+# 1.- Primero necesitamos sacar la matriz del texto plano
+# 2.- Despues debemos sacar la inversa de ese texto plano
+# 3.- Sacamos la matriz del texto cifrado
+# 4.- Para sacar a nuestra K(llave) multiplicamos la Inversa del plano y nuestro cifrado
+
+def computeMatrixKey(originalText,ciphertext,alphabet):
+	originalMatrix = getMatrixFromText(originalText,alphabet)
+	cipherMatrix = getMatrixFromText(ciphertext,alphabet)
+
+	inverseOriginal = getMatrixInverse(originalMatrix)
+	matrixKey = np.dot(inverseOriginal,cipherMatrix) % sizeAlphabet
+
+	matrixString = ""
+	for i in range(matrix_size):
+		for j in range(matrix_size):
+			auxString = str(int(matrixKey[i][j]))
+			matrixString += (auxString+" ")
+
+	return matrixString
+
+def getMatrixKey():
+	plainFile = input("Name of the file with the plain text:")
+	cipherFile = input("Name of the file with the ciphertext:")
+
+    originalText = open(plainFile+".txt",'r').read()
+    cipherText = open(cipherFile+".txt",'r').read()
 
     alphabet = convertListToDictionary(list(string.printable))
-
-    if type_cf == False:
-        originalText = originalText[1:]
-        originalText = originalText[:len(originalText)-1]
-        originalText = cleanCiphertext(originalText,alphabet)
-
-    matrix = readMatrixValues(matrixFile)
-    errorType = validateValues(matrix,initialFile, type_cf)
-
-    if errorType > 0:
-    	print("Error "+str(errorType)+" has been made, see the documentation")
-    	sys.exit()
-    else:
-	    cipherText = repr(encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet,alphabet,type_cf))
-	    file = open(finalFile+".txt",'w')
-	    file.write(str(cipherText))
-	    file.close()
+	# We have to get rid of the annoying characters that we aint gonna use
+    cipherText = cipherText[1:]
+    cipherText = cipherText[:len(cipherText)-1]
+    cipherText = cleanCiphertext(cipherText,alphabet)
+    # Probably gonna have to validate the actual length of the plainText and cipherText
+    # For an 3x3 key we need at least a length of 9
+    matrixString = repr(computeMatrixKey(originalText,cipherText,alphabet))
+    file = open("matrixKey.txt",'w')
+    file.write(str(matrixString))
+    file.close()
 
 def testApp():
 	initialFile = "plainText"
@@ -202,19 +261,34 @@ def testApp():
 		encryptOrDecryptFromFile(matrixFile,"cipherText","decipherText", False)
 		os.remove("cipherText.txt")
 		print("Decrypting DONE!")
+
+def initApp():
+	miComando   = "clear"
+	subprocess.call(miComando, shell=True)
+	option = input("1: Get key from plain text and ciphertext \n2: Decrypt a ciphertext with a given key \nInput: ")
+	subprocess.call(miComando, shell=True)
+	option = int(option)
+
+	if (int(option) == 1):
+		getMatrixKey()
+		print("Matrix key generated successfully!")
+	elif (option == 2):
+		shutil.copyfile(initialFile+'.hill', initialFile+'_.hill')  
+		os.rename(initialFile+'.hill',"cipherText.txt")
+		os.rename(initialFile+'_.hill',initialFile+'.hill')
+		encryptOrDecryptFromFile(matrixFile,"cipherText","decipherText", False)
+		os.remove("cipherText.txt")
+		print("Decrypting DONE!")
 		
 #testApp()
-# Como sacar a K?
-# 1.-Primero necesitamos sacar la matriz del texto plano
-# 2.-Despues debemos sacar la inversa de ese texto plano
-# 3.- Sacamos la matriz del texto cifrado
-# 4.- Para sacar a nuestra K(llave) multiplicamos la Inversa del plano y nuestro cifrado
+
 
 # Como descifrar un texto cifrado con la K que conseguimos?
 # 1.- Sacamos la matriz del texto cifrado
 # 2.- Sacamos a la inversa de nuestra k
 # 3.- Multiplicamos el cifrado por la inversa
 # 4.- Conseguimos el texto original
+
 def prueba():
 	plano = np.array([[7,14,11],[0,15,14],[17,17,14]])
 	#print(getDeterminant(plano))
@@ -233,4 +307,12 @@ def prueba():
 	print("Orignal perro")
 	print(original_perro)
 
-prueba()
+def prueba2():
+	plainText = "HOLAPORRO"
+	cipherText = "FMOSCDPBW"
+	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	alphabet = convertListToDictionary(list(alpha))
+	print(computeMatrixKey(plainText,cipherText,alphabet))
+
+
+prueba2()
