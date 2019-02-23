@@ -265,7 +265,7 @@ def testApp():
 def initApp():
 	miComando   = "clear"
 	subprocess.call(miComando, shell=True)
-	option = input("1: Get key from plain text and ciphertext \n2: Decrypt a ciphertext with a given key \nInput: ")
+	option = input("1: Get key from given plain text and ciphertext \n2: Decrypt a ciphertext with a given key \nInput: ")
 	subprocess.call(miComando, shell=True)
 	option = int(option)
 
