@@ -11,7 +11,15 @@ sizeAlphabet = 26
 specialCases = 6
 matrix_size = 3
 
-# COSAS DE MATRICES
+
+
+
+###############################################################################################################################
+######################################################### MATRIX STUFF ########################################################
+###############################################################################################################################
+
+
+
 
 def extendedEuclideanA(numberA,numberB):
 	numberA = int(numberA)
@@ -64,7 +72,13 @@ def getMatrixInverse(matrix):
 
 
 
-#COSAS PARA ARCHIVOS
+
+###############################################################################################################################
+######################################################## DESCIFRAR ############################################################
+###############################################################################################################################
+
+
+
 
 def validateValues(matrix, fileSource, type_cf):
 	errorType = 0
@@ -182,6 +196,8 @@ def encryptOrDecryptFromFile(type_cf):
 
     alphabet = convertListToDictionary(list("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 
+    # Descomentar esta parte si es que el texto fue generado con el cifrador
+    # O quitar las comillas a mano
     # if type_cf == False:
     #     originalText = originalText[1:]
     #     originalText = originalText[:len(originalText)-1]
@@ -198,6 +214,18 @@ def encryptOrDecryptFromFile(type_cf):
 	    file = open(finalFile+".txt",'w')
 	    file.write(str(cipherText))
 	    file.close()
+
+
+
+
+
+###############################################################################################################################
+######################################################## CRIPTOANALYSIS #######################################################
+###############################################################################################################################
+
+
+
+
 
 def getMatrixFromText(text,alphabet):
 	temporaryList = list(text)
@@ -234,12 +262,13 @@ def computeMatrixKey(originalText,ciphertext,alphabet):
 def getMatrixKey():
     plainFile = input("Name of the file with the plain text:")
     cipherFile = input("Name of the file with the ciphertext:")
+
     originalText = open(plainFile+".txt",'r').read()
     cipherText = open(cipherFile+".txt",'r').read()
 
     alphabet = convertListToDictionary(list("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 
-	# We have to get rid of the annoying characters that we aint gonna use
+	# Si leemos un texto cifrado desde archivo debemos limpiarlo
     # cipherText = cipherText[1:]
     # cipherText = cipherText[:len(cipherText)-1]
     # cipherText = cleanCiphertext(cipherText,alphabet)
@@ -250,6 +279,14 @@ def getMatrixKey():
     file = open("matrixKey.txt",'w')
     file.write(str(matrixString))
     file.close()
+
+
+
+
+###############################################################################################################################
+########################################################### M A I N ###########################################################
+###############################################################################################################################
+
 
 
 def initApp():
@@ -265,33 +302,34 @@ def initApp():
 	elif (option == 2):
 		encryptOrDecryptFromFile(False)
 		print("Decrypting DONE!")
-		
+
+initApp()
 
 
-def prueba():
-	plano = np.array([[7,14,11],[0,15,14],[17,17,14]])
-	#print(getDeterminant(plano))
-	inversa = getMatrixInverse(plano)
-	#print(inversa)
-	cifrado = np.array([[5,12,14],[18,2,3],[15,1,22]])
-	k = np.dot(inversa,cifrado) % sizeAlphabet
-	print("La K es")
-	print(k)
-	perro = np.array([[15,4,17],[17,14,6],[0,19,14]])
-	cifrado_perro = np.dot(perro,k)%sizeAlphabet
-	print("Cifrado perro")
-	print(cifrado_perro)
-	inversa_k = getMatrixInverse(k)
-	original_perro = np.dot(cifrado_perro,inversa_k)%sizeAlphabet
-	print("Orignal perro")
-	print(original_perro)
+# def prueba():
+# 	plano = np.array([[7,14,11],[0,15,14],[17,17,14]])
+# 	#print(getDeterminant(plano))
+# 	inversa = getMatrixInverse(plano)
+# 	#print(inversa)
+# 	cifrado = np.array([[5,12,14],[18,2,3],[15,1,22]])
+# 	k = np.dot(inversa,cifrado) % sizeAlphabet
+# 	print("La K es")
+# 	print(k)
+# 	perro = np.array([[15,4,17],[17,14,6],[0,19,14]])
+# 	cifrado_perro = np.dot(perro,k)%sizeAlphabet
+# 	print("Cifrado perro")
+# 	print(cifrado_perro)
+# 	inversa_k = getMatrixInverse(k)
+# 	original_perro = np.dot(cifrado_perro,inversa_k)%sizeAlphabet
+# 	print("Orignal perro")
+# 	print(original_perro)
 
-def prueba2():
-	plainText = "HOLAPORRO"
-	cipherText = "FMOSCDPBW"
-	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	alphabet = convertListToDictionary(list(alpha))
-	print(computeMatrixKey(plainText,cipherText,alphabet))
+# def prueba2():
+# 	plainText = "HOLAPORRO"
+# 	cipherText = "FMOSCDPBW"
+# 	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# 	alphabet = convertListToDictionary(list(alpha))
+# 	print(computeMatrixKey(plainText,cipherText,alphabet))
 
-#initApp()
-prueba2()
+# #initApp()
+# prueba2()
