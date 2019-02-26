@@ -228,10 +228,7 @@ def encryptOrDecryptFromFile(type_cf):
 ###############################################################################################################################
 
 
-
-
-
-def getMatrixFromCipherText(text,alphabet):
+def getMatrixFromCipherText(text,alphabet,index):
 	temporaryList = list(text)
 	l = []
 	for i in range(len(temporaryList)):
@@ -239,7 +236,8 @@ def getMatrixFromCipherText(text,alphabet):
 		if temporaryString in alphabet.values():
 			lKey = [key for key, value in alphabet.items() if value == temporaryString][0]
 			l.append(lKey)
-	matrix = np.array([[int(l[0]),int(l[1]),int(l[2])],[int(l[3]),int(l[4]),int(l[5])],[int(l[6]),int(l[7]),int(l[8])]])
+
+	matrix = np.array([[int(l[index]),int(l[index+1]),int(l[index+2])],[int(l[index+3]),int(l[index+4]),int(l[index+5])],[int(l[index+6]),int(l[index+7]),int(l[index+8])]])
 	return matrix
 
 def getMatrixFromPlainText(text,alphabet):
@@ -254,14 +252,15 @@ def getMatrixFromPlainText(text,alphabet):
 	times = len(temporaryList) / (matrix_size*matrix_size)
 	offset = matrix_size*matrix_size
 	matrix = np.array([[-1,-1,-1], [-1,-1,-1],[-1,-1,-1]])
-
+	final_index = -1
 	for i in range(0,times,offset):
 		matrix = np.array([[int(l[i]),int(l[i+1]),int(l[i+2])],[int(l[i+3]),int(l[i+4]),int(l[i+5])],[int(l[i+6]),int(l[i+7]),int(l[i+8])]])
 		inversa = getMatrixInverse(matrix)
 		if(inversa[0][0] != -1):
+			final_index = i
 			break
 	
-	return matrix
+	return matrix,final_index
 
 # Como sacar a K?
 # 1.- Primero necesitamos sacar la matriz del texto plano
@@ -270,13 +269,13 @@ def getMatrixFromPlainText(text,alphabet):
 # 4.- Para sacar a nuestra K(llave) multiplicamos la Inversa del plano y nuestro cifrado
 
 def computeMatrixKey(originalText,ciphertext,alphabet):
-	originalMatrix = getMatrixFromPlainText(originalText,alphabet)
+	originalMatrix,index = getMatrixFromPlainText(originalText,alphabet)
 
-	if originalMatrix[0][0] == -1:
+	if index == -1:
 		print("Could not generate a valid matrix with the given plain text")
 		sys.exit()
 	
-	cipherMatrix = getMatrixFromCipherText(ciphertext,alphabet)
+	cipherMatrix = getMatrixFromCipherText(ciphertext,alphabet,index)
 
 	inverseOriginal = getMatrixInverse(originalMatrix)
 	matrixKey = np.dot(inverseOriginal,cipherMatrix) % sizeAlphabet
