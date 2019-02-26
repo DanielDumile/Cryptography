@@ -161,15 +161,14 @@ def encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet, alphabet,type_
 # IMPORTANTE
 
 def readMatrixValues(matrixFile):
-	sourceFile = matrixFile+".txt"
-	# Tambien limpiamos al texto de la matriz
-	values = open(sourceFile, 'r').read()
-	values = values[1:]
+    sourceFile = matrixFile+".txt"
+    # Tambien limpiamos al texto de la matriz
+    values = open(sourceFile, 'r').read()
+    values = values[1:]
     values = values[:len(values)-1]
-	
-	a,b,c,d,e,f,g,h,i = values.split()
-	matrix = np.array([[int(a),int(b),int(c)],[int(d),int(e),int(f)],[int(g),int(h),int(i)]])
-	return matrix
+    a,b,c,d,e,f,g,h,i = values.split()
+    matrix = np.array([[int(a),int(b),int(c)],[int(d),int(e),int(f)],[int(g),int(h),int(i)]])
+    return matrix
 
 def cleanCiphertext(cipherText,alphabet):
 	cleanText = ""
@@ -249,7 +248,7 @@ def getMatrixFromPlainText(text,alphabet):
 			lKey = [key for key, value in alphabet.items() if value == temporaryString][0]
 			l.append(lKey)
 	
-	times = len(temporaryList) / (matrix_size*matrix_size)
+	times = int(len(temporaryList) / (matrix_size*matrix_size))
 	offset = matrix_size*matrix_size
 	matrix = np.array([[-1,-1,-1], [-1,-1,-1],[-1,-1,-1]])
 	final_index = -1
@@ -258,6 +257,7 @@ def getMatrixFromPlainText(text,alphabet):
 		inversa = getMatrixInverse(matrix)
 		if(inversa[0][0] != -1):
 			final_index = i
+			print(final_index)
 			break
 	
 	return matrix,final_index
@@ -299,9 +299,9 @@ def getMatrixKey():
 
     arrayOfWords = originalText.split()
 
-    if(len(arrayOfWords) < 9)
-    	print("Plain text should be longer")
-		sys.exit()
+    if len(arrayOfWords) < 9:
+        print("Plain text should be longer")
+        sys.exit()
     
     fullText = ""
     for i in range(len(arrayOfWords)):
@@ -318,9 +318,9 @@ def getMatrixKey():
     # For an 3x3 key we need at least a length of 9
     matrixString = repr(computeMatrixKey(fullText,cipherText,alphabet))
     print("Matrix key generated successfully!")
-	file = open("matrixKey.txt",'w')
-	file.write(str(matrixString))
-	file.close()
+    file = open("matrixKey.txt",'w')
+    file.write(str(matrixString))
+    file.close()
 
 
 
