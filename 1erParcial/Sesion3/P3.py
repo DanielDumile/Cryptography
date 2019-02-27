@@ -7,6 +7,18 @@ import shutil
 import numpy as np
 import math
 
+ #Instituto Politecnico Nacional
+ #Escuela Superior de Computo
+ #Cryptography
+ #Group: 3CM6
+ #Student: Gonzalez Nunez Daniel
+ #Teacher: Dra. Diaz Santiago Sandra
+ #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ #Cryptanalysis of the Hill Cipher
+ #Date: 27/02/2019
+
+# Inicializacion de variables globales importantes
+
 sizeAlphabet = 94
 specialCases = 6
 matrix_size = 3
@@ -19,7 +31,10 @@ matrix_size = 3
 ###############################################################################################################################
 
 
-
+# Funcion que recibe dos numeros enteros como parametro y regresa los valoresde
+# gcd(A,B)
+# x: ax+by = gcd(a,b)
+# y: ax+by = gcd(a,b)
 
 def extendedEuclideanA(numberA,numberB):
 	numberA = int(numberA)
@@ -43,9 +58,13 @@ def extendedEuclideanA(numberA,numberB):
 		return numberA,u0,v0
 	else:
 		return 0,1,0
+# Función que recibe como parametro una matriz de NxN y regresa el determinante de esa matriz, modulo el tamaño de nuestro alfabeto
 
 def getDeterminant(matrix):
 	return round(np.linalg.det(matrix) % sizeAlphabet) 
+
+# Función que recibe como parámetro una matriz de NxN y regresa la matriz adjunta.
+# La matriz adjunta se define como la matriz transpuesta del producto del determinante y la matriz de cofactores
 
 def getAdjoint(matrix):
     cofactor = np.linalg.inv(matrix).T * np.linalg.det(matrix)
@@ -55,9 +74,13 @@ def getAdjoint(matrix):
     		aux[i][j] = round(aux[i][j]%sizeAlphabet)
     return aux
 
+# Funcion que regresa el gcd de un entero y el tamaño de nuestro alfabeto, así como el inverso modular de ese número.
+
 def getEuclidean(a):
 	tupleValues = extendedEuclideanA(a,sizeAlphabet)
 	return tupleValues[0],tupleValues[1]
+
+# Función que recibe como parámetro ua matriz de 3x3 y retorna la inversa de dicha matriz
 
 def getMatrixInverse(matrix):
 	inverse = np.array([[-1,-1,-1], [-1,-1,-1],[-1,-1,-1]])
@@ -78,7 +101,8 @@ def getMatrixInverse(matrix):
 ###############################################################################################################################
 
 
-
+# Función usada para validar los valores de la matriz.
+# Si el gcd del determinante de la matriz y el alfabeto es diferente de 1, la matriz no es válida.
 
 def validateValues(matrix, fileSource, type_cf):
 	errorType = 0
@@ -91,6 +115,8 @@ def validateValues(matrix, fileSource, type_cf):
 	# 	errorType = 4 
 	return errorType
 
+# Función que recibe una lista de caracteres y nos regresa un diccionario con esos caracteres
+
 def convertListToDictionary(myList):
 	temporaryList = myList
 	temporaryDictionary = {}
@@ -99,6 +125,8 @@ def convertListToDictionary(myList):
 	for i in range(len(myList)):
 		temporaryDictionary[i] = temporaryList[i]  
 	return temporaryDictionary
+
+# Función que filtra los caracteres válidos de una palabra
 
 def filterWord(originalWord, alphabet):
 	finalString = ""
@@ -146,6 +174,7 @@ def encryptOrDecryptWord(originalWord, alphabet,matrix,type_cf):
 
 	return cipherWord
 
+# Funcion que recibe el texto plano y genera una sola palabra concatenando todo el texto
 
 def encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet, alphabet,type_cf):
     arrayOfWords = originalText.split()
@@ -159,6 +188,7 @@ def encryptOrDecryptPlainText(originalText, matrix, sizeAlphabet, alphabet,type_
     return cipherText
 
 # IMPORTANTE
+# Función que abre el archivo seleccionado para poder leer los valores de la matriz introducida por el usuario.
 
 def readMatrixValues(matrixFile):
     sourceFile = matrixFile+".txt"
@@ -169,6 +199,8 @@ def readMatrixValues(matrixFile):
     a,b,c,d,e,f,g,h,i = values.split()
     matrix = np.array([[int(a),int(b),int(c)],[int(d),int(e),int(f)],[int(g),int(h),int(i)]])
     return matrix
+
+# Función usada para quitar los carácteres que causan problemas a Python
 
 def cleanCiphertext(cipherText,alphabet):
 	cleanText = ""
@@ -188,6 +220,9 @@ def cleanCiphertext(cipherText,alphabet):
 			cleanText+=temporaryString
 
 	return cleanText
+
+# Funcion que abre un archivo a cifrar o descifirar y valida los valores introducidos por el usuario.
+# Dependiendo de la acción a realizar, se limpia el texto o no.
 
 def encryptOrDecryptFromFile(type_cf):
 
@@ -226,6 +261,8 @@ def encryptOrDecryptFromFile(type_cf):
 ######################################################## CRIPTOANALYSIS #######################################################
 ###############################################################################################################################
 
+# Funcion que obtiene una matriz a partir del texto cifrado que se le pasa como parametro, del alfabeto indicado y del indice en especifico
+# Por el cual comenzara a segmentar el texto y obtener las llaves correspondientes.
 
 def getMatrixFromCipherText(text,alphabet,index):
 	temporaryList = list(text)
@@ -238,6 +275,10 @@ def getMatrixFromCipherText(text,alphabet,index):
 
 	matrix = np.array([[int(l[index]),int(l[index+1]),int(l[index+2])],[int(l[index+3]),int(l[index+4]),int(l[index+5])],[int(l[index+6]),int(l[index+7]),int(l[index+8])]])
 	return matrix
+
+# Funcion que obtiene una matriz a partir de nuestro texto plano y el alfabeto especificado.
+# Se buscara una llave valida de tamano NxN por todo el texto plano, si se consigue regresara una matriz valida.
+# Consideramos a una matriz valida para usar en nuestro criptoanalisis si esta tiene una inversa
 
 def getMatrixFromPlainText(text,alphabet):
 	temporaryList = list(text)
@@ -288,6 +329,9 @@ def computeMatrixKey(originalText,ciphertext,alphabet):
 
 	return matrixString
 
+# Funcion que escribe en un archivo la matriz resultante a partir de nuestro criptoanalisis del cifrado de Hill
+# Para hacer este criptoanalisis necesitamos el texto plano y el texto cifrado correspondiente.
+# Calcularemos las matrices correspondientes para cada texto y las multiplicaremos para obtener la K usada para cifrar
 def getMatrixKey():
     plainFile = input("Name of the file with the plain text:")
     cipherFile = input("Name of the file with the ciphertext:")
@@ -330,6 +374,7 @@ def getMatrixKey():
 ###############################################################################################################################
 
 
+# Funcion principal
 
 def initApp():
 	miComando   = "clear"
@@ -346,31 +391,3 @@ def initApp():
 
 initApp()
 
-
-# def prueba():
-# 	plano = np.array([[7,14,11],[0,15,14],[17,17,14]])
-# 	#print(getDeterminant(plano))
-# 	inversa = getMatrixInverse(plano)
-# 	#print(inversa)
-# 	cifrado = np.array([[5,12,14],[18,2,3],[15,1,22]])
-# 	k = np.dot(inversa,cifrado) % sizeAlphabet
-# 	print("La K es")
-# 	print(k)
-# 	perro = np.array([[15,4,17],[17,14,6],[0,19,14]])
-# 	cifrado_perro = np.dot(perro,k)%sizeAlphabet
-# 	print("Cifrado perro")
-# 	print(cifrado_perro)
-# 	inversa_k = getMatrixInverse(k)
-# 	original_perro = np.dot(cifrado_perro,inversa_k)%sizeAlphabet
-# 	print("Orignal perro")
-# 	print(original_perro)
-
-# def prueba2():
-# 	plainText = "HOLAPORRO"
-# 	cipherText = "FMOSCDPBW"
-# 	alpha = string.printable
-# 	alphabet = convertListToDictionary(list(alpha))
-# 	print(computeMatrixKey(plainText,cipherText,alphabet))
-
-# #initApp()
-# prueba2()
