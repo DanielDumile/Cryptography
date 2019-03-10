@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-CONSTANT_IVF = "../iv"
+CONSTANT_IVF = "iv"
 
 CONSTANT_SP = "ñ" #specialCharacter
 
 CONSTANT_B  = 64 #Base
-CONSTANT_IVF = "../iv"
+CONSTANT_IVF = "iv"
 
 CONSTANT_KS = 16 #KeySize
 

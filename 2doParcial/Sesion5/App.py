@@ -36,19 +36,9 @@ obtainBaseList =  lambda specialCharacter, size: list(string.printable[:base-num
 
 baseList = obtainBaseList(specialCharacter, base)
 
-def obtainKey(keySize):
 
-    key = []
-    if keySize in allowKeySize:
-        for i in range(keySize):
-            key.append(random.choice(baseList))
 
-    return ''.join(key)
-
-def saveDataInFile(data, fileName):
-    file = open(fileName, writeMode)
-    file.write(data)
-    file.close()
+# UTILITIES
 
 def completeWithZeros(data):
     while len(data) % multiplus != 0:
@@ -85,11 +75,31 @@ def completeWithRandomString(data):
     return data
 
 def obtainFibonacciNumber(n):
-
     if n <= 1:
         return n
     else:
         return(obtainFibonacciNumber(n-1) + obtainFibonacciNumber(n-2))
+
+
+
+
+
+
+
+
+def obtainKey(keySize):
+    key = []
+    if keySize in allowKeySize:
+        for i in range(keySize):
+            key.append(random.choice(baseList))
+
+    return ''.join(key)
+
+def saveDataInFile(data, fileName):
+    file = open(fileName, writeMode)
+    file.write(data)
+    file.close()
+
 
 def obtainPlainText(fileName):
     file = open(fileName, binaryReadM)
