@@ -136,10 +136,6 @@ def encryptFile(fileToEncrypt):
     myTuple = os.path.splitext(fileToEncrypt)
     saveBinaryFile(encryptText,myTuple[0]+"_"+myTuple[1].replace(".",""))
 
-#    subprocess.call(command1, shell=True)
-
-#   subprocess.call(command2, shell=True)
-
 def decryptFile(fileToDecrypt,keyFile):
     myTuple = extractData(keyFile)
     pseudoKey = myTuple[0]
