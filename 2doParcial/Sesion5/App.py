@@ -38,7 +38,7 @@ baseList = obtainBaseList(specialCharacter, base)
 
 
 
-# UTILITIES
+# Tecnicas de padding
 
 def completeWithZeros(data):
     while len(data) % multiplus != 0:
@@ -53,25 +53,20 @@ def completeWithSpecialSymbol(data, symbolToAdd):
 def completeWithFibonacciNumbers(data):
     temporaryList = []
     counter = 0
-
     for i in range(multiplus-1):
         temporaryList.append(obtainFibonacciNumber(i))
-
     while(len(data) % multiplus != 0):
         data+=str(temporaryList[counter])
         counter+=1
-
     return data
 
 def completeWithRandomString(data):
     temporaryList = baseList
     random.shuffle(temporaryList)
     counter = 0
-    
     while(len(data) % multiplus != 0):
         data += str.encode(str(temporaryList[counter]))
         counter+=1
-
     return data
 
 def obtainFibonacciNumber(n):
@@ -79,14 +74,7 @@ def obtainFibonacciNumber(n):
         return n
     else:
         return(obtainFibonacciNumber(n-1) + obtainFibonacciNumber(n-2))
-
-
-
-
-
-
-
-
+#Poner
 def obtainKey(keySize):
     key = []
     if keySize in allowKeySize:
@@ -123,43 +111,46 @@ def readFileData(fileName):
     data = file.read()
     file.close()
     return data
-
+#Poner
 def encryptFile(fileToEncrypt):
-    
     pseudoKey = obtainKey(keySize)
     iv = Random.new().read(DES3.block_size)
     saveBinaryFile(iv, ivFile)
+    
     plainText = obtainPlainText(fileToEncrypt)
     pad_len = obtainPadLen(plainText)
     saveDataInFile(pseudoKey+str(pad_len),keyFile)
+    
     encryptText = des3_encrypt(pseudoKey,iv,plainText)
     myTuple = os.path.splitext(fileToEncrypt)
     saveBinaryFile(encryptText,myTuple[0]+"_"+myTuple[1].replace(".",""))
-
+#Poner
 def decryptFile(fileToDecrypt,keyFile):
     myTuple = extractData(keyFile)
     pseudoKey = myTuple[0]
     pad_len   = int(myTuple[1])
+    
     iv = obtainPlainText(ivFile)
     encryptText = obtainPlainText(fileToDecrypt)
     var = des3_decrypt(pseudoKey,iv,pad_len,encryptText)
+    
     myTuple = os.path.splitext(fileToDecrypt)
     temporaryStr = str(myTuple[0])
     extension = re.findall(r'_.*', temporaryStr)[0].replace("_","")
     saveBinaryFile(var,decryptFile_+"."+extension)
 
-
+#Poner
 def _make_des3_encryptor(key, iv):
     encryptor = DES3.new(key, DES3.MODE_CBC, iv)
     return encryptor
-
+#Poner
 def des3_encrypt(key, iv, data):
     encryptor = _make_des3_encryptor(key, iv)
     pad_len = multiplus - len(data) % multiplus 
     padding = chr(pad_len) * pad_len 
     data += str.encode(padding)
     return encryptor.encrypt(data)
-
+#Poner
 def des3_decrypt(key, iv, pad_len,data):
     encryptor = _make_des3_encryptor(key, iv)
     result = encryptor.decrypt(data)

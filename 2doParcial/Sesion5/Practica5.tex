@@ -1,0 +1,218 @@
+
+\documentclass[10pt]{article}  
+\title{Plantilla para prácticas de ESCOM}
+\usepackage[spanish]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage{minted}
+\usepackage{amsmath} 
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color} 
+\usepackage{subfigure} 
+\usepackage{float} 
+\usepackage{capt-of} 
+\usepackage{sidecap}
+	\sidecaptionvpos{figure}{c} 
+\usepackage{caption} % Para poder quitar numeracion de figuras
+\usepackage{commath} % funcionalidades extras para diferenciales, integrales,
+% etc (\od, \dif, etc)
+\usepackage{cancel} % para cancelar expresiones (\cancelto{0}{x})
+ 
+\usepackage{anysize} 					% Para personalizar el ancho de  los márgenes
+\marginsize{2cm}{2cm}{2cm}{2cm} % Izquierda, derecha, arriba, abajo
+
+\usepackage{appendix}
+\renewcommand{\appendixname}{Apéndices}
+\renewcommand{\appendixtocname}{Apéndices}
+\renewcommand{\appendixpagename}{Apéndices} 
+
+% Para que las referencias sean hipervínculos a las figuras o ecuaciones y
+% aparezcan en color
+\usepackage[colorlinks=true,plainpages=true,citecolor=blue,linkcolor=blue]{hyperref}
+%\usepackage{hyperref} 
+% Para agregar encabezado y pie de página
+\usepackage{fancyhdr} 
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize ESCOM} %encabezado izquierda
+\fancyhead[R]{\footnotesize IPN}   % dereecha
+\fancyfoot[R]{\footnotesize Primer Parcial}  % Pie derecha
+\fancyfoot[C]{\thepage}  % centro
+\fancyfoot[L]{\footnotesize Ingeniería en Sistemas Computacionales}  %izquierda
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\usepackage{listings} % Para usar código fuente
+\definecolor{dkgreen}{rgb}{0,0.6,0} % Definimos colores para usar en el código
+\definecolor{gray}{rgb}{0.5,0.5,0.5} 
+% configuración para el lenguaje que queramos utilizar
+\lstset{language=Matlab,
+   keywords={break,case,catch,continue,else,elseif,end,for,function,
+      global,if,otherwise,persistent,return,switch,try,while},
+   basicstyle=\ttfamily,
+   keywordstyle=\color{blue},
+   commentstyle=\color{red},
+   stringstyle=\color{dkgreen},
+   numbers=left,
+   numberstyle=\tiny\color{gray},
+   stepnumber=1,
+   numbersep=10pt,
+   backgroundcolor=\color{white},
+   tabsize=4,
+   showspaces=false,
+   showstringspaces=false}
+
+\newcommand{\sen}{\operatorname{\sen}}	% Definimos el comando \sen para el seno
+%en español
+
+%\title{Plantilla para trabajo terminal I de UPIITA}
+
+%%%%%%%% TERMINA PREÁMBULO %%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+																					%%%
+\begin{center}																		%%%
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}									%%%\left
+ 																					%%%
+\begin{minipage}{0.48\textwidth} \begin{flushleft}
+\includegraphics[scale = 0.35]{Imagenes/logoescom}
+\end{flushleft}\end{minipage}
+\begin{minipage}{0.48\textwidth} \begin{flushright}
+\includegraphics[scale = 0.35]{Imagenes/IPN}
+\end{flushright}\end{minipage}
+
+													 								%%%
+\vspace*{-1.5cm}								%%%
+																					%%%	
+\textsc{\huge Instituto Polit\'ecnico\\ \vspace{5px} Nacional}\\[1.5cm]	
+
+\textsc{\LARGE Escuela Superior de Cómputo}\\[1.5cm]													%%%
+
+\begin{minipage}{0.9\textwidth} 
+\begin{center}																					%%%
+\textsc{\LARGE Cryptography}
+\end{center}
+\end{minipage}\\[0.5cm]
+%%%
+    																				%%%
+ 			\vspace*{1cm}																		%%%
+																					%%%
+\HRule \\[0.4cm]																	%%%
+{ \huge \bfseries Block Ciphers}\\[0.4cm]	%%%
+ 																					%%%
+\HRule \\[1.5cm]																	%%%
+ 																				%%%
+																					%%%
+\begin{minipage}{0.46\textwidth}													%%%
+\begin{flushleft} \large															%%%
+\emph{Autores:}\\	
+González Núñez Daniel Adrián\\
+Hernández Castellanos César Uriel\\
+%%%
+			%\vspace*{2cm}	
+            													%%%
+										 						%%%
+\end{flushleft}																		%%%
+\end{minipage}		
+																%%%
+\begin{minipage}{0.52\textwidth}		
+\vspace{-0.6cm}											%%%
+\begin{flushright} \large															%%%
+\emph{Docente:} \\																	%%%
+Dra. Sandra Diaz Santiago\\													%%%
+\end{flushright}																	%%%
+\end{minipage}	
+\vspace*{1cm}
+%\begin{flushleft}
+ 	
+%\end{flushleft}
+%%%
+ 		\flushleft{\textbf{\Large Ingeniería en Sistemas Computacionales}	}\\																		%%%
+\vspace{2cm} 																				
+\begin{center}																					
+{\large \today}																	%%%
+ 			\end{center}												  						
+\end{center}							 											
+																					
+\newpage																		
+%%%%%%%%%%%%%%%%%%%% TERMINA PORTADA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\tableofcontents 
+%\tableofcontents 
+\newpage
+
+\section{Introducción}
+   \subsection{3DES}
+      También conocido como Triple DES, es un cifrador por bloques de llave simétrica el cual basa todo su funcionamiento en la aplicación del algoritmo de cifrado DES, en tres ocasiones a cada bloque a cifrar, con tres llaves distintas entre si.
+
+      Este algoritmo nació de la necesidad de incrementar el tamaño de la llave usada por DES, con un tamaño de llave de 56 bits, por el creciente poder de los computadores que hacían que un ataque por fuerza bruta fuera posible. Por lo que 3DES surgió como una idea relativamente simple para poder incrementar el tamaño de la llave y así proteger al algoritmo de este tipo de ataques. Todo esto se hizo con el fin de no tener que crear un nuevo algoritmo para poder resolver esta problemática.
+
+      Cuando 3DES trabaja con tres llaves distintas se vuelve más seguro, llega a formar una llave de hasta 168 bits, que resulta mucho mejor que una de 56 bits con las que suele trabajar DES. Sin embargo no siempre se cuentan con tres llaves distintas, por lo que la seguridad se ve reducida hasta los 80 bits. También, 3DES es vulnerable a colisiones por el tamaño de los bloques que maneja. Son estas la razones que han hecho que mucha gente prefiera AES, un algoritmo que brinda mejor seguridad y corre hasta 6 veces más rápido, ya que 3DES empieza a considerarse como un algoritmo de cifrado débil.
+
+   \subsection{Modos de operación}
+      A un modo de operación lo podemos definir como una manera en la que se usará al cifrado por bloques, en este caso a 3DES, para cifrar a mensajes de alguna longitud aribtraria. Hay que recordar que de manera predefinida, los cifradores por bloque solo pueden sifrar cadenas binarias de un tamaño definido. 
+
+      Por lo tanto, los modos de operación son útiles ya que la mayoría de las veces nos encontraremos con cifrados que no encajen perfectamente con el tamaño de llave seleccionado para nuestro cifrador.
+
+      Los cinco modos de operación con los cuales cuenta nuestra biblioteca criptográfica que usaremos son los siguientes:
+
+      \begin{enumerate}
+         \item \textbf{Electronic Code Book (ECB)}
+         \item \textbf{Cipher Block Chaining (CBC)}
+         \item \textbf{Cipher Feedback Mode (CFB)}
+         \item \textbf{Output Feedback Mode (OFB)}
+         \item \textbf{Counter Mode (CTR)}
+      \end{enumerate}
+
+   \subsection{PyCrypto}
+      PyCrypto es una librería usada en el lenguaje de programación Python, que brinda diferentes métodos de hasheo (como lo son SHA256 o MD5) y algunos algoritmos para cifrar (como 3DES,DES,AES) que son los que terminaremos usando en nuestra prácticas. 
+
+      Decidimos elegir a PyCrypto como nuestra librería principal con las que trabajaremos ya que es la que mejor catálogo de funciones nos ofrece para cumplir con los requerimientos de las práctias porvenir. Además, Python no cuenta con tantas librerías como C++ o Java, y no queríamos cambiar de lenguaje de último momento, ya que ambos estamos familiarizados con Python y su sintáxis.
+
+\section{Descripción del problema}
+   \textbf{Objetivo:} Cifrar y descifrar archivos de diferente tipo (.docx,.cpp,.java,.pdf,etc) usando el algoritmo explicado previamente, 3DES, y usando diferentes modos de operación. Hacer varias pruebas con archivos de diferentes tamaños (500kb,1MB,5MB,10MB) y con contenido distinto. Anotar los tiempos de ejecución por cada archivo con cada modo de operación y hacer gráficas comparativas para cada uno, con el fin de saber cual fue el modo de operación con el mejor rendimiento.
+
+\section{Descripción de la solución}
+   \subsection{Cifrado}
+      Lo primero que haremos es definir a una función la cual se encargará de generar una llave, pseudo-aleatoria, que será usada para nuestro proceso de cifrado. Esta es la función:
+      
+      \begin{figure}[H]
+         %\centering
+         %Codigo para TestApp
+         %\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+         \inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=78, lastline=84]{python}{code/App.py}
+         \caption{Función que retorna una llave pseudoaleatoria}
+      \end{figure}
+
+      Lo primero que se hace en esa función es checar si el tamaño de nuestra llave es uno válido para el tipo de cifrado que usaremos, en este caso se aceptan valores de 16 o 24 bytes. Después, crearemos la llave del tamaño especificado mediante la concatenación de caracteres aleatorios basados en un diccionario de caracteres imprimibles por Python. Al final retornaremos la llave creada.
+
+      Ya que contamos con nuestra llave aleatorio generada, el siguiente paso es iniciar con el cifrado. La función principal en la cual llevaremos a cabo nuestro proceso de cifrado es la siguiente:
+      \begin{figure}[H]
+         %\centering
+         %Codigo para TestApp
+         %\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+         \inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=115, lastline=126]{python}{code/App.py}
+         \caption{Función que principal encargada del cifrado}
+      \end{figure}
+
+      En esta función lo primero que llevaremos a cabo sera llamar a la función explicada previamente para poder obtener la llave pseudoaleatoria. Después, generaremos a nuestro vector de inicialización (IV) el cual usaremos dependiendo del modo de operación seleccionado para crear nuestro cifrador en 3DES. Este vector de inicialización se crea mediante una llamada a la función Random de PyCrypto, el cual salvaremos en un archivo para su uso posterior en el proceso.
+
+      Continuaremos con el proceso 
+
+   \subsubsection*{Técnicas de Padding}
+   \subsection{Descifrado}
+
+
+\section{Conclusión}
+
+
+%%%%%%% Bibliografía %%%%%%%%
+\bibliographystyle{bst/IEEEtran.bst} 
+\addcontentsline{toc}{section}{Referencias}  
+\bibliography{bib/IEEEabrv,bib/IEEEreferencias.bib} 
+%%%%%%% Bibliografía %%%%%%%%    
+
+
+\end{document}
