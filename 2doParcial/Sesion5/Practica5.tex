@@ -176,35 +176,87 @@ Dra. Sandra Diaz Santiago\\													%%%
 
 \section{Descripción de la solución}
    \subsection{Cifrado}
-      Lo primero que haremos es definir a una función la cual se encargará de generar una llave, pseudo-aleatoria, que será usada para nuestro proceso de cifrado. Esta es la función:
+      	Lo primero que haremos es definir a una función la cual se encargará de generar una llave, pseudo-aleatoria, que será usada para nuestro proceso de cifrado. Esta es la función:
       
-      \begin{figure}[H]
-         %\centering
-         %Codigo para TestApp
-         %\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
-         \inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=78, lastline=84]{python}{code/App.py}
-         \caption{Función que retorna una llave pseudoaleatoria}
-      \end{figure}
+		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=78, lastline=84]{python}{code/App.py}
+			\caption{Función que retorna una llave pseudoaleatoria}
+		\end{figure}
 
-      Lo primero que se hace en esa función es checar si el tamaño de nuestra llave es uno válido para el tipo de cifrado que usaremos, en este caso se aceptan valores de 16 o 24 bytes. Después, crearemos la llave del tamaño especificado mediante la concatenación de caracteres aleatorios basados en un diccionario de caracteres imprimibles por Python. Al final retornaremos la llave creada.
+		Lo primero que se hace en esa función es checar si el tamaño de nuestra llave es uno válido para el tipo de cifrado que usaremos, en este caso se aceptan valores de 16 o 24 bytes. Después, crearemos la llave del tamaño especificado mediante la concatenación de caracteres aleatorios basados en un diccionario de caracteres imprimibles por Python. Al final retornaremos la llave creada.
 
-      Ya que contamos con nuestra llave aleatorio generada, el siguiente paso es iniciar con el cifrado. La función principal en la cual llevaremos a cabo nuestro proceso de cifrado es la siguiente:
-      \begin{figure}[H]
-         %\centering
-         %Codigo para TestApp
-         %\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
-         \inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=115, lastline=126]{python}{code/App.py}
-         \caption{Función que principal encargada del cifrado}
-      \end{figure}
+		Ya que contamos con nuestra llave aleatorio generada, el siguiente paso es iniciar con el cifrado. La función principal en la cual llevaremos a cabo nuestro proceso de cifrado es la siguiente:
+		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=115, lastline=126]{python}{code/App.py}
+			\caption{Función principal encargada del cifrado}
+		\end{figure}
 
-      En esta función lo primero que llevaremos a cabo sera llamar a la función explicada previamente para poder obtener la llave pseudoaleatoria. Después, generaremos a nuestro vector de inicialización (IV) el cual usaremos dependiendo del modo de operación seleccionado para crear nuestro cifrador en 3DES. Este vector de inicialización se crea mediante una llamada a la función Random de PyCrypto, el cual salvaremos en un archivo para su uso posterior en el proceso.
+		En esta función lo primero que llevaremos a cabo sera llamar a la función explicada previamente para poder obtener la llave pseudoaleatoria. Después, generaremos a nuestro vector de inicialización (IV) el cual usaremos dependiendo del modo de operación seleccionado para crear nuestro cifrador en 3DES. Este vector de inicialización se crea mediante una llamada a la función Random de PyCrypto, el cual salvaremos en un archivo para su uso posterior en el proceso.
 
-      Continuaremos con el proceso 
+		Continuaremos con el proceso mediante la obtención del texto plano, en binario, de nuestro archivo a cifrar. Esto lo haremos para comprobar si es que necesitamos usar alguna técnica de padding, las cuales explicaremos más adelante, para poder rellenar el texto plano y asi poder cifrar con la llave del tamaño deseado. Una vez que tengamos la llave a usar y el tamaño de nuestro padding, guardaremos ambos en un archivo que usaremos después para poder descifrar nuestro mensaje.
 
-   \subsubsection*{Técnicas de Padding}
-   \subsection{Descifrado}
+		La última parte de nuestro proceso de cifrado consiste en llamar a otra función, llamada $des3encrypt$, la cual se hará cargo de retornar un texto en binario de nuestro archivo cifrado, el cual nos encargaremos de escribir como contenido de un archivo final.
+
+		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=147, lastline=152]{python}{code/App.py}
+			\caption{Función encargada de cifrar el archivo}
+		\end{figure}
+
+		En esta última función que forma parte de nuestro proceso de cifrado lo primero que haremos será definir a un nuevo cifrador de 3DES con la llave, el vector de inicialización y el modo de operación indicado, en este caso usamos Cipher Block Chaining.
+
+		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=143, lastline=145]{python}{code/App.py}
+			\caption{Función encargada de la creación de nuestro cifrador para 3DES}
+		\end{figure}
+
+		Está función nos retornará el cifrador de 3DES que usaremos para cifrar el archivo. Antes de cifrar, deberemos calcular el tamaño de padding a utilizar (si es que se necesita) y agregarselo a nuestro archivo para poder realizar el cifrado de manera correcta. Ya que hayamos agregado nuestro padding y hayamos definido a nuestro cifrador, procederemos a cifrar nuestro archivo y retornar el resultado.
 
 
+   	\subsubsection*{Técnicas de Padding}
+   		% HACER UN LISTADO DE LAS TECNICAS USADAS DE PADDING
+   		Debemos recalcar que el padding es necesario para poder ajustar el tamaño de nuestro archivo o texto a cifrar, con el tamaño de la llave utilizada por nuestro cifrador, a manera de que no haya algún error no deseado durante el proceso de cifrado. Lo único que deben de tener en común todos estos métodos de padding es que deben generar un padding del mismo tamaño, todos ellos, para poder llenar el espacio requerido. 
+
+   		No importa el método o la información que se utilice para llenar ese espacio, veremos que según se haga estos métodos podrán ser considerados más seguros unos que otros, lo importante será que todos tengan el mismo tamaño ya que es lo que nos importa saber para poder despreciar esa última cadena de información a la hora de iniciar con nuestro descifrado.
+
+   		A continuación mostraremos algunas de las técnicas MANUALES de padding que usamos en nuestro programa:
+
+   		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=43, lastline=70]{python}{code/App.py}
+			\caption{Función encargada de la creación de nuestro cifrador para 3DES}
+		\end{figure}
+
+		\begin{itemize}
+			\item \textit{completeWithZeros}: La primera que se muestra es la más sencilla de todas pero a la vez la más insegura por lo que vimos en clase. Esta consiste en rellenar los espacios necesarios con puros ceros como nuestro carácter especial.
+			\item \textit{completeWithSpecialSymbol}: Aquí elegiremos algun caracter especial, cual sea, que forme parte de nuestro conjunto de caracteres imprimibles de Python.
+			\item \textit{completeWithFibonacciNumbers}: Esta es una función especial que decidimos crear para poder obtener una cadena que fuera diferente a todos los métodos de padding anteriores. Aquí procederemos a calcular el i-ésimo número de Fibonacci para cada caracter que necesitemos agregar a nuestro padding. 
+			\item \textit{completeWithRandomString}: Probablemente la técnica más segura que se puede usar para generar un buen padding sea esta, usar una cadena del tamaño necesario llena de carácteres de nuestro diccionario de imprimibles, todos ellos en una posición al azar. Con este método garantizamos que lo que agregaremos no tiene secuencia o repetición alguna, y es del tamaño deseado.
+		\end{itemize}
+		
+
+
+
+   	\subsection{Descifrado}
+   		% LO MISMO QUE EL CIFRADO LAS DOS FUNCIONES Y YA
+
+\section{Desarrollo Experimental}
+	% PONER UNA  DESCRIPCION DE QUE HACEMOS
+	\subsection{Gráficas}
+	% INTERPRETAR CADA UNA DE LAS GRAFICAS
 \section{Conclusión}
 
 
