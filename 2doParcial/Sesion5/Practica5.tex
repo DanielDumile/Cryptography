@@ -242,16 +242,44 @@ Dra. Sandra Diaz Santiago\\													%%%
 
 		\begin{itemize}
 			\item \textit{completeWithZeros}: La primera que se muestra es la más sencilla de todas pero a la vez la más insegura por lo que vimos en clase. Esta consiste en rellenar los espacios necesarios con puros ceros como nuestro carácter especial.
+			
 			\item \textit{completeWithSpecialSymbol}: Aquí elegiremos algun caracter especial, cual sea, que forme parte de nuestro conjunto de caracteres imprimibles de Python.
+			
 			\item \textit{completeWithFibonacciNumbers}: Esta es una función especial que decidimos crear para poder obtener una cadena que fuera diferente a todos los métodos de padding anteriores. Aquí procederemos a calcular el i-ésimo número de Fibonacci para cada caracter que necesitemos agregar a nuestro padding. 
+			
 			\item \textit{completeWithRandomString}: Probablemente la técnica más segura que se puede usar para generar un buen padding sea esta, usar una cadena del tamaño necesario llena de carácteres de nuestro diccionario de imprimibles, todos ellos en una posición al azar. Con este método garantizamos que lo que agregaremos no tiene secuencia o repetición alguna, y es del tamaño deseado.
 		\end{itemize}
 		
-
-
-
    	\subsection{Descifrado}
    		% LO MISMO QUE EL CIFRADO LAS DOS FUNCIONES Y YA
+   		A continuación presentamos la función principal encargada de descifrar el archivo cifrado.
+
+   		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=128, lastline=140]{python}{code/App.py}
+			\caption{Función principal encargada de descifrar el archivo}
+		\end{figure}
+
+		El funcionamiento de este método inicia con la lectura de la llave y del tamaño de padding usado al momento de cifrar. Hay que recordar que estos dos valores los guardamos en un archivo al momento de cifrar, ya que sabemos que son necesarios para descifrar el archivo de manera correcta. 
+
+		También, de otro archivo obtendremos el vector de inicialización ($VI$) usado en el paso de cifrado previo y el texto, en binario, que compone a nuestro archivo cifrado. Ya al haber obtenido todos estos valores que son fundamentalmente necesarios para iniciar con nuestro descifrado, lo que haremos será llamar a otra función que se encarga de retornar el contenido descifrado.
+
+		\begin{figure}[H]
+			%\centering
+			%Codigo para TestApp
+			%\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+			\inputminted[linenos, firstnumber=1, breaklines, tabsize=4, firstline=154, lastline=158 ]{python}{code/App.py}
+			\caption{Función encargada de retornar el contenido descifrado}
+		\end{figure}
+
+		Si comparamos está función con su equivalente que usamos para el cifrado, vienen teniendo el mismo funcionamiento. Lo primero que hacen es generar el cifrador de $DES3$ correspondiente a la llave y el vector de inicialización utilizados, tomando en cuenta que se debe de usar el mismo modo de operación usado para el cifrado. 
+
+		Después de crear el cifrador, se procede a usarlo para poder descifrar el contenido y, por último, a ese contenido descifrado lo que le haremos será quitar el padding que habíamos asignado al momento de cifrar, y que sabemos que no forma parte del mensaje original.
+
+		Ya que está nueva función nos haya regresado el contenido descifrado lo que haremos será escribir ese contenido en un nuevo archivo con un nombre y extensión específica; para eso usaremos la función de $saveBinaryFile()$.
+
 
 \section{Desarrollo Experimental}
 	% PONER UNA  DESCRIPCION DE QUE HACEMOS
