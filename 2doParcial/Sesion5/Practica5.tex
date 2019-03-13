@@ -280,19 +280,64 @@ Dra. Sandra Diaz Santiago\\													%%%
 
 		Ya que está nueva función nos haya regresado el contenido descifrado lo que haremos será escribir ese contenido en un nuevo archivo con un nombre y extensión específica; para eso usaremos la función de $saveBinaryFile()$.
 
+	\subsection{Salida del programa}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.9\textwidth]{Imagenes/salida.png}
+		    \caption{Salida del programa}
+		\end{figure}
 
 \section{Desarrollo Experimental}
 	% PONER UNA  DESCRIPCION DE QUE HACEMOS
 	\subsection{Gráficas}
+		\subsubsection{ECB}
+			\begin{figure}[H]
+		        \centering
+		        \includegraphics[width=0.4\textwidth]{Imagenes/ecb.png}
+		        \caption{Gráfica de ECB}
+	        \end{figure}
+     	\subsubsection{CBC}
+			Como se esperaba, el CBC requiere más tiempo de procesamiento que el BCE debido a su naturaleza de encadenamiento de claves. Los resultados que se muestran en la figura siguiente también indican que el tiempo adicional agregado no es significativo para muchas aplicaciones, sabiendo que el CBC es mucho mejor que el BCE en términos de protección. La diferencia entre los dos modos es difícil de ver a simple vista, los resultados mostraron que la diferencia promedio entre el BCE y el CBC es de 0.059896 segundos, que es relativamente pequeña.
+	
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.4\textwidth]{Imagenes/cbc.png}
+		        \caption{Gráfica de CBC}
+			\end{figure}
+
+		\subsubsection{CTR}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.4\textwidth]{Imagenes/ctr.png}
+				\caption{Gráfica de CTR}
+			\end{figure}
+
+		\subsubsection{OFB}
+
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.4\textwidth]{Imagenes/ofb.png}
+				\caption{Gráfica de OFB}
+			\end{figure}
+
+		\subsubsection{CFB}			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.4\textwidth]{Imagenes/cfb.png}
+				\caption{Gráfica de CFB}
+			\end{figure}
+
+
 	% INTERPRETAR CADA UNA DE LAS GRAFICAS
+	
+	
 \section{Conclusión}
 
 
-%%%%%%% Bibliografía %%%%%%%%
-\bibliographystyle{bst/IEEEtran.bst} 
-\addcontentsline{toc}{section}{Referencias}  
-\bibliography{bib/IEEEabrv,bib/IEEEreferencias.bib} 
-%%%%%%% Bibliografía %%%%%%%%    
+\begin{figure}[H]
+\centering
+\includegraphics[width=1.0\textwidth]{Imagenes/bib.png}
 
+\end{figure}	
 
 \end{document}
