@@ -377,10 +377,10 @@ def getMatrixKey():
 # Funcion principal
 
 def initApp():
-	miComando   = "clear"
-	subprocess.call(miComando, shell=True)
+	miComando   = "cls"
+	#subprocess.call(miComando, shell=True)
 	option = input("1: Get key from given plain text and ciphertext \n2: Decrypt a ciphertext with a given key \nInput: ")
-	subprocess.call(miComando, shell=True)
+	#subprocess.call(miComando, shell=True)
 	option = int(option)
 
 	if (int(option) == 1):
