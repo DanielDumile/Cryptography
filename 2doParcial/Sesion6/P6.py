@@ -60,29 +60,33 @@ def getString(a):
             ans+="0"
     return ans[::-1]
 
+def checkHex(a):
+    for i in range(len(a)):
+        if(i != len(a)-1):
+            if(a[i] == '0' and a[i+1] == 'x'):
+                return True
+    return False
 
 def main():
-
-    while True:
-        a = input("Enter number A: ")
-        a = int("0x"+a,0)
-        print(a)
-        print(getString(a))
-        b = input("Enter number B: ")
-        b = int("0x"+b,0)
-        print(b)
-        print(getString(b))
-        #print(getPoly(a))
-        #a = int(getNumber(a))
-        #print(getPoly(b))
-        #b = int(getNumber(b))
-        #print(getPoly(mod))
-        mod = int(getNumber("100011011"))
-        mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
-        #print(basic(b,mod))
-        print("Resultado:")
-        res = mul(a,b,mod)
-        print(hex(res))
-        #print(getPoly(getString(mul(a,b,mod))))
+    a = input("Introduce el numero: ")
+    if(checkHex(a)):
+        a = int(a,0)
+    a = int(a)
+    print(getPoly(getString(a)))
+    
+    # while True:
+    #     a = input("Enter number A: ")
+    #     a = int("0x"+a,0)
+    #     print(a)
+    #     print(getString(a))
+    #     b = input("Enter number B: ")
+    #     b = int("0x"+b,0)
+    #     print(b)
+    #     print(getString(b))
+    #     mod = int(getNumber("100011011"))
+    #     mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
+    #     print("Resultado:")
+    #     res = mul(a,b,mod)
+    #     print(hex(res))
     
 main()
