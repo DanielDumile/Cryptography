@@ -2,14 +2,16 @@ import math
 
 def basic(b,m):
     ult = int(math.log2(m))
-    print("El ultimo es "+ult)
+    print("El ultimo es "+str(ult))
     flag = False
     b = b << 1
+    print(getString(b))
     if (b&(1<<ult)):
+        print("Esta prendido el ultimo")
         b = b ^ (1<<ult)
-        flag = True
-    if(flag):
-        b = b^(m^(1 << (ult)))
+        print(getString(b))
+        print("Despues del XOR nos da "+ str(b))
+        b = b^(m^(1<<ult))
     return b
     
 def mul(a,b,m):
@@ -84,4 +86,3 @@ def main():
         #print(getPoly(getString(mul(a,b,mod))))
     
 main()
-    
