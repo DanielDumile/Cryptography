@@ -1,6 +1,6 @@
 import math
-
-mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
+#mod = 100011010
+#mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
 
 def basic(b,mod):
     ult = int(math.log2(mod))
@@ -69,7 +69,7 @@ def computeMultiplicativeInverse(aux,a,mod):
 
 def getMultiplicativeInverse(a):
     a = int("0x"+a,0)
-    #mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
+    mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
     res = computeMultiplicativeInverse(a,a,mod)
     return hex(res).split('x')[1]
 
@@ -79,46 +79,41 @@ def getSboxValue(b,c):
 		res += str(int(b[i]) ^ int(b[(i+4)%8]) ^ int(b[(i+5)%8]) ^ int(b[(i+6)%8]) ^ int(b[(i+7)%8]) ^ int(c[i]))
 	return res
 
-#Que reciba todo en HEXA
+
 def main():
-    a = input("Enter number A: ")
-    inverse = getMultiplicativeInverse(a)
-    print(inverse)
-
-	# b = input("Introduce number A in hexadecimal: ")
-	# b = int("0x"+b,0) #Ya es entero
-	# b = getString(b)# Sacamos la cadena binaria
-	# b = b[::-1]# Volteamos esa cadena
-	# # Llenamos de ceros si hacen falta
-	# while(len(b) < 8):
-	# 	b+='0'
-	# print(b)
-	# c = "11000110"# Definida por default
-	# ans = getSboxValue(b,c)
-	# ans = ans[::-1]# Volteamos lo obtenido
-	# ans = getNumber(ans)# Obtenemos el entero de la cadena binaria
-	# ans = hex(ans)# Obtenemos el hexa del entero
-	# print(ans)
-	
-    # a = input("Introduce el numero: ")
-    # if(checkHex(a)):
-    #     a = int(a,0)
-    # a = int(a)
-    # print(getPoly(getString(a)))
-
-    # while True:
-    #     a = input("Enter number A: ")
-    #     a = int("0x"+a,0)
-    #     print(a)
-    #     print(getString(a))
-    #     b = input("Enter number B: ")
-    #     b = int("0x"+b,0)
-    #     print(b)
-    #     print(getString(b))
-    #     mod = int(getNumber("100011011"))
-    #     mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
-    #     print("Resultado:")
-    #     res = mul(a,b,mod)
-    #     print(hex(res))
+	opc = int(input("1.- Multiplication in a binary field\n2.- Get the polynomial representation \n3.- Get the S-box value \nInput:"))
+	if(opc == 1):
+		print("All the values should be introduced using a binary representation")
+		mod = input("Introduce the irreducible polynomial:")
+		mod = int(getNumber(mod))
+		a = input("Introduce number A:")
+		a = int(getNumber(a))
+		b = input("Introduce number B:")
+		b = int(getNumber(b))
+		ans = mul(a,b,mod)
+		ans = getString(ans)
+		print("Answer: " + str(ans))
+	elif(opc == 2):
+		print("All the values should be introduced using a binary representation")
+		a = input("Introduce number A:")
+		ans = getPoly(a)
+		print("Answer: "+str(ans))
+	else:
+		print("All the values should be introduced using HEXADECIMAL values")
+		a = input("Introduce number A: ")
+		b = getMultiplicativeInverse(a)
+		print("Its multiplicative inverse is "+str(b))
+		b = int("0x"+b,0) #Ya es entero
+		b = getString(b)# Sacamos la cadena binaria
+		b = b[::-1]# Volteamos esa cadena
+		# Llenamos de ceros si hacen falta
+		while(len(b) < 8):
+			b+='0'
+		c = "11000110"# Definida por default
+		ans = getSboxValue(b,c)
+		ans = ans[::-1]# Volteamos lo obtenido
+		ans = getNumber(ans)# Obtenemos el entero de la cadena binaria
+		ans = hex(ans)# Obtenemos el hexa del entero
+		print("Answer: " + str(ans))
     
 main()
