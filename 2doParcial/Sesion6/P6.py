@@ -1,20 +1,22 @@
 import math
 
-def basic(b,m):
-    ult = int(math.log2(m))
-    print("El ultimo es "+str(ult))
+mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
+
+def basic(b,mod):
+    ult = int(math.log2(mod))
+    #print("El ultimo es "+str(ult))
     flag = False
     b = b << 1
-    print(getString(b))
+    #print(getString(b))
     if (b&(1<<ult)):
-        print("Esta prendido el ultimo")
+        #print("Esta prendido el ultimo")
         b = b ^ (1<<ult)
-        print(getString(b))
-        print("Despues del XOR nos da "+ str(b))
-        b = b^(m^(1<<ult))
+        #print(getString(b))
+        #print("Despues del XOR nos da "+ str(b))
+        b = b^(mod^(1<<ult))
     return b
     
-def mul(a,b,m):
+def mul(a,b,mod):
     tam = int(math.log2(a))+1
     i = 0
     res = 0
@@ -22,7 +24,7 @@ def mul(a,b,m):
         if(a &(1<<i)):
             aux = b
             for j in range(i):
-                aux = basic(aux,m)
+                aux = basic(aux,mod)
             res = res ^ aux
         i= i+1
     return res
@@ -60,20 +62,50 @@ def getString(a):
             ans+="0"
     return ans[::-1]
 
-def checkHex(a):
-    for i in range(len(a)):
-        if(i != len(a)-1):
-            if(a[i] == '0' and a[i+1] == 'x'):
-                return True
-    return False
+def computeMultiplicativeInverse(aux,a,mod):
+    for i in range(253):
+        a = mul(aux,a,mod)
+    return a
 
+def getMultiplicativeInverse(a):
+    a = int("0x"+a,0)
+    #mod = int(pow(2,8)+pow(2,4)+pow(2,3)+pow(2,1)+pow(2,0))
+    res = computeMultiplicativeInverse(a,a,mod)
+    return hex(res).split('x')[1]
+
+def getSboxValue(b,c):
+	res = ""
+	for i in range(8):
+		res += str(int(b[i]) ^ int(b[(i+4)%8]) ^ int(b[(i+5)%8]) ^ int(b[(i+6)%8]) ^ int(b[(i+7)%8]) ^ int(c[i]))
+	return res
+
+#Que reciba todo en HEXA
 def main():
-    a = input("Introduce el numero: ")
-    if(checkHex(a)):
-        a = int(a,0)
-    a = int(a)
-    print(getPoly(getString(a)))
-    
+    a = input("Enter number A: ")
+    inverse = getMultiplicativeInverse(a)
+    print(inverse)
+
+	# b = input("Introduce number A in hexadecimal: ")
+	# b = int("0x"+b,0) #Ya es entero
+	# b = getString(b)# Sacamos la cadena binaria
+	# b = b[::-1]# Volteamos esa cadena
+	# # Llenamos de ceros si hacen falta
+	# while(len(b) < 8):
+	# 	b+='0'
+	# print(b)
+	# c = "11000110"# Definida por default
+	# ans = getSboxValue(b,c)
+	# ans = ans[::-1]# Volteamos lo obtenido
+	# ans = getNumber(ans)# Obtenemos el entero de la cadena binaria
+	# ans = hex(ans)# Obtenemos el hexa del entero
+	# print(ans)
+	
+    # a = input("Introduce el numero: ")
+    # if(checkHex(a)):
+    #     a = int(a,0)
+    # a = int(a)
+    # print(getPoly(getString(a)))
+
     # while True:
     #     a = input("Enter number A: ")
     #     a = int("0x"+a,0)
